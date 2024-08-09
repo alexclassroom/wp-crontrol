@@ -11,8 +11,6 @@ The WP Crontrol plugin is private by default and always will be. It does not sen
 
 I have high confidence that WP Crontrol has no impact on the GDPR or CCPA compliance of your site, although I cannot guarantee it.
 
-If you need to maintain a historical log of changes to cron events and schedules then the excellent [Simple History plugin](https://wordpress.org/plugins/simple-history/) has built-in support for logging actions performed via WP Crontrol.
-
 Please note that in a future version of WP Crontrol, an opt-in feature may be introduced which allows you to choose to log the outcome of cron events as they run, persistently store the logs, and/or optionally send the logs to a third party service. Such features will only ever be opt-in.
 
 ## wp-crontrol.com website privacy statement
@@ -23,4 +21,4 @@ The wp-crontrol.com website:
 * Is operated by [John Blackbourn](/docs/about/).
 * Is hosted on [Netlify](https://www.netlify.com/).
 
-This privacy statement is subject to change and was last updated on July 29, 2024.
+This privacy statement is subject to change and was last updated on August 9, 2024.
