@@ -11,16 +11,11 @@
 		"node": ">=18"
 	},
 	"devDependencies": {
-		"@jsdevtools/version-bump-prompt": "6.1.0",
-		"vitepress-plugin-rss": "0.2.6",
-		"vitepress": "1.2.3"
+		"@jsdevtools/version-bump-prompt": "6.1.0"
 	},
 	"scripts": {
 		"bump:patch": "bump patch --commit 'Version %s.' wp-crontrol.php package.json readme.md",
 		"bump:minor": "bump minor --commit 'Version %s.' wp-crontrol.php package.json readme.md",
-		"bump:major": "bump major --commit 'Version %s.' wp-crontrol.php package.json readme.md",
-		"docs:dev": "vitepress dev docs",
-		"docs:build": "vitepress build docs",
-		"docs:preview": "vitepress preview docs"
+		"bump:major": "bump major --commit 'Version %s.' wp-crontrol.php package.json readme.md"
 	}
 }
