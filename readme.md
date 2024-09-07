@@ -10,9 +10,9 @@ WP Crontrol enables you to take control of the cron events on your WordPress web
 
 ## Description
 
-WP Crontrol enables you to take control of the cron events on your WordPress website. From the admin screens you can:
+WP Crontrol enables you to take control of the scheduled cron events on your WordPress website or WooCommerce store. From the admin screens you can:
 
- * View all cron events along with their arguments, schedule, callback functions, and when they are next due.
+ * View all scheduled cron events along with their arguments, schedule, callback functions, and when they are next due.
  * Edit, delete, pause, resume, and immediately run cron events.
  * Add new cron events.
  * Bulk delete cron events.

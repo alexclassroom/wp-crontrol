@@ -252,8 +252,6 @@ class Table extends \WP_List_Table {
 	 * Get an associative array ( option_name => option_title ) with the list
 	 * of bulk actions available on this table.
 	 *
-	 * @since 3.1.0
-	 *
 	 * @return array<string,string>
 	 */
 	protected function get_bulk_actions() {

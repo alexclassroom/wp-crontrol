@@ -12,7 +12,7 @@
 
 	<rule ref="WordPress-Extra">
 
-		<!-- Skip checks for naming and indentation because IDGAF: -->
+		<!-- Skip checks for naming and indentation: -->
 		<exclude name="WordPress.NamingConventions.ValidHookName.UseUnderscores" />
 		<exclude name="WordPress.Files.FileName" />
 		<exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />

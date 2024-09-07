@@ -1135,7 +1135,7 @@ function filter_cron_schedules( array $scheds ) {
 }
 
 /**
- * Displays the options page for the plugin.
+ * Displays the Cron Schedules page for the plugin.
  *
  * @return void
  */
@@ -1871,7 +1871,7 @@ function show_cron_form( $editing ) {
 }
 
 /**
- * Displays the manage page for the plugin.
+ * Displays the Cron Events page for the plugin.
  *
  * @return void
  */
