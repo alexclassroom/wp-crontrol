@@ -1,6 +1,7 @@
 includes:
 	- vendor/szepeviktor/phpstan-wordpress/extension.neon
 	- vendor/johnbillion/plugin-infrastructure/phpstan/extension.neon
+	- vendor/johnbillion/wp-compat/extension.neon
 parameters:
 	level: 8
 	paths:
@@ -15,3 +16,5 @@ parameters:
 			- tests/integration/Supports/
 	bootstrapFiles:
 		- tests/phpstan/stubs.php
+	WPCompat:
+		requiresAtLeast: '5.8'
