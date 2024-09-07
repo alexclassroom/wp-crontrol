@@ -26,7 +26,7 @@ function init_hooks() {
 	add_action( 'init',                               __NAMESPACE__ . '\action_init' );
 	add_action( 'init',                               __NAMESPACE__ . '\action_handle_posts' );
 	add_action( 'admin_menu',                         __NAMESPACE__ . '\action_admin_menu' );
-	add_filter( "plugin_action_links_{$plugin_file}", __NAMESPACE__ . '\plugin_action_links', 10, 4 );
+	add_filter( "plugin_action_links_{$plugin_file}", __NAMESPACE__ . '\plugin_action_links' );
 	add_filter( "network_admin_plugin_action_links_{$plugin_file}", __NAMESPACE__ . '\network_plugin_action_links' );
 	add_filter( 'removable_query_args',               __NAMESPACE__ . '\filter_removable_query_args' );
 	add_filter( 'pre_unschedule_event',               __NAMESPACE__ . '\maybe_clear_doing_cron' );
@@ -1070,13 +1070,10 @@ function admin_help_tab() {
 /**
  * Adds items to the plugin's action links on the Plugins listing screen.
  *
- * @param array<string,string> $actions     Array of action links.
- * @param string               $plugin_file Path to the plugin file relative to the plugins directory.
- * @param mixed[]              $plugin_data An array of plugin data.
- * @param string               $context     The plugin context.
+ * @param array<string,string> $actions Array of action links.
  * @return array<string,string> Array of action links.
  */
-function plugin_action_links( $actions, $plugin_file, $plugin_data, $context ) {
+function plugin_action_links( $actions ) {
 	$new = array(
 		'crontrol-events'    => sprintf(
 			'<a href="%s">%s</a>',
