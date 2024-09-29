@@ -16,5 +16,3 @@ parameters:
 			- tests/integration/Supports/
 	bootstrapFiles:
 		- tests/phpstan/stubs.php
-	WPCompat:
-		requiresAtLeast: '5.8'
