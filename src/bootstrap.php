@@ -635,9 +635,9 @@ function action_handle_posts() {
 				}
 
 				$event = Event\get_single( urldecode( $hook ), $sig, $next_run_utc );
-				$deleted = Event\delete( urldecode( $hook ), $sig, $next_run_utc );
+				$result = Event\delete( urldecode( $hook ), $sig, $next_run_utc );
 
-				if ( ! is_wp_error( $deleted ) ) {
+				if ( ! is_wp_error( $result ) ) {
 					$deleted++;
 
 					/** This action is documented in wp-crontrol.php */
