@@ -46,12 +46,12 @@ jobs:
           - '6.6'
           - '6.5'
         php:
-          - '8.2'
+          - '8.3'
           - '7.4'
         include:
           # Latest stable on PHP 8.3:
           - wp: '6.7-RC1'
-            php: '8.3'
+            php: '8.4'
           # Oldest supported on PHP 7.4:
           - wp: '5.8'
             php: '7.4'
