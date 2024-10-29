@@ -638,7 +638,7 @@ function action_handle_posts() {
 				$result = Event\delete( urldecode( $hook ), $sig, $next_run_utc );
 
 				if ( ! is_wp_error( $result ) ) {
-					$deleted++;
+					++$deleted;
 
 					/** This action is documented in wp-crontrol.php */
 					do_action( 'crontrol/deleted_event', $event );
@@ -1967,7 +1967,7 @@ function admin_manage_page() {
 		);
 	}
 
-	$tabs  = get_tab_states();
+	$tabs = get_tab_states();
 
 	switch ( true ) {
 		case $tabs['events']:
