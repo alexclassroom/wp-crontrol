@@ -2,7 +2,6 @@ includes:
 	- vendor/szepeviktor/phpstan-wordpress/extension.neon
 	- vendor/johnbillion/plugin-infrastructure/phpstan/extension.neon
 	- vendor/johnbillion/wp-compat/extension.neon
-	- vendor/phpstan/phpstan-strict-rules/rules.neon
 parameters:
 	level: 8
 	paths:
@@ -17,5 +16,3 @@ parameters:
 			- tests/integration/Supports/
 	bootstrapFiles:
 		- tests/phpstan/stubs.php
-	strictRules:
-		allRules: false
