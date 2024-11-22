@@ -35,7 +35,7 @@ permissions:
 
 jobs:
   test:
-    name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
+    name: WP ${{ matrix.wp }}
     strategy:
       # See the following for PHP compatibility of WordPress versions:
       # https://make.wordpress.org/core/handbook/references/php-compatibility-and-wordpress-versions/
@@ -56,7 +56,7 @@ jobs:
           - wp: '5.9'
             php: '7.4'
       fail-fast: false
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@test-naming
     with:
       node: false
       php: ${{ matrix.php }}

@@ -36,7 +36,7 @@ permissions:
 jobs:
   test:
     name: PHP
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@test-naming
     strategy:
       matrix:
         php:

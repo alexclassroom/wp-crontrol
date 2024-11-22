@@ -23,14 +23,14 @@ on:
 
 jobs:
   acceptance:
-    name: Nightly acceptance / PHP ${{ matrix.php }}
+    name: Nightly acceptance
     strategy:
       matrix:
         php:
           - '8.3'
           - '7.4'
       fail-fast: false
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@test-naming
     with:
       node: false
       php: ${{ matrix.php }}
