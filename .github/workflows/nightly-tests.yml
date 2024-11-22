@@ -23,9 +23,11 @@ on:
 
 jobs:
   acceptance:
-    name: Nightly acceptance
+    name: Nightly ${{ matrix.label }}
     strategy:
       matrix:
+        label:
+          - 'acceptance'
         php:
           - '8.3'
           - '7.4'
