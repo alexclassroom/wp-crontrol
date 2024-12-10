@@ -21,9 +21,13 @@ on:
       - '.github/workflows/nightly-tests.yml'
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   acceptance:
     name: Nightly ${{ matrix.label }}
+    permissions:
+      contents: read
     strategy:
       matrix:
         label:

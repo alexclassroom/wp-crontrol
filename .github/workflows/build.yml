@@ -7,12 +7,13 @@ on:
       - 'release'
   workflow_dispatch:
 
-permissions:
-  contents: write
+permissions: {}
 
 jobs:
   build:
     name: Build
+    permissions:
+      contents: write
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-build.yml@trunk
     with:
       node: false
