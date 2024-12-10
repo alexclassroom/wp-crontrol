@@ -13,7 +13,6 @@ on:
       - '**.php'
       - 'composer.json'
       - 'phpcs.xml.dist'
-      - 'phpcs56.yml'
       - 'phpstan.neon.dist'
   pull_request:
     branches:
@@ -25,7 +24,6 @@ on:
       - '**.php'
       - 'composer.json'
       - 'phpcs.xml.dist'
-      - 'phpcs56.yml'
       - 'phpstan.neon.dist'
   workflow_dispatch:
 
