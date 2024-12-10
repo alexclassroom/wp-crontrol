@@ -34,14 +34,13 @@ jobs:
     name: ${{ matrix.label }}
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@157f88f06869cd738b9a0dc4d4ba6b422dba8a1a
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@cs2pr
     strategy:
       matrix:
         label:
           - 'PHP'
         php:
           - '8.3'
-          - '7.4'
       fail-fast: false
     with:
       php: ${{ matrix.php }}
