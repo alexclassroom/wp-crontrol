@@ -75,7 +75,7 @@
 			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs.json --basepath=./ ."
 		],
 		"test:phpstan": [
-			"codecept build",
+			"codecept build #",
 			"phpstan analyze -v --memory-limit=1024M"
 		],
 		"test:start": [
