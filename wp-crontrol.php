@@ -38,8 +38,6 @@ namespace Crontrol;
 const PLUGIN_FILE = __FILE__;
 const WP_CRONTROL_VERSION = '1.17.1';
 
-echo $_GET['foo'];
-
 if ( ! defined( 'ABSPATH' ) ) {
 	header( 'HTTP/1.1 403 Forbidden' );
 	exit;
@@ -52,8 +50,6 @@ if ( ! version_compare( PHP_VERSION, '7.4', '>=' ) ) {
 if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	return;
 }
-
-strlen( 3 );
 
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/src/bootstrap.php';
