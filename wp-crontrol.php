@@ -53,6 +53,8 @@ if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	return;
 }
 
+strlen( 3 );
+
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/src/bootstrap.php';
 require_once __DIR__ . '/src/event.php';
