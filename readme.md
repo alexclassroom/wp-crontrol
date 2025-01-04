@@ -20,6 +20,10 @@ WP Crontrol is aware of timezones, will alert you to events that have no actions
 
 [Extensive documentation on how to use WP Crontrol and how to get help for error messages that it shows is available on the WP Crontrol website](https://wp-crontrol.com/docs/how-to-use/).
 
+## Frequently Asked Questions
+
+[See the FAQ on the WordPress.org plugin page for WP Crontrol](https://wordpress.org/plugins/wp-crontrol/#faq).
+
 ## Other Plugins
 
 I maintain several other plugins for developers. Check them out:
