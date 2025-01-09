@@ -1353,12 +1353,12 @@ function show_cron_status() {
 		?>
 		<div id="crontrol-timezone-warning" class="notice notice-warning">
 			<?php
-				printf(
-					'<p>%1$s</p><p><a href="%2$s">%3$s</a></p>',
-					esc_html__( 'PHP default timezone is not set to UTC. This may cause issues with cron event timings.', 'wp-crontrol' ),
-					'https://wp-crontrol.com/help/php-default-timezone/',
-					esc_html__( 'More information', 'wp-crontrol' )
-				);
+			printf(
+				'<p>%1$s</p><p><a href="%2$s">%3$s</a></p>',
+				esc_html__( 'PHP default timezone is not set to UTC. This may cause issues with cron event timings.', 'wp-crontrol' ),
+				'https://wp-crontrol.com/help/php-default-timezone/',
+				esc_html__( 'More information', 'wp-crontrol' )
+			);
 			?>
 		</div>
 		<?php
@@ -1572,8 +1572,8 @@ function show_cron_form( $editing ) {
 			?>
 		<form method="post" action="<?php echo esc_url( admin_url( 'tools.php?page=wp-crontrol' ) ); ?>" class="crontrol-edit-event crontrol-edit-event-<?php echo esc_attr( $cron_type ); ?>">
 			<?php
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo $other_fields;
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $other_fields;
 			?>
 			<table class="form-table"><tbody>
 				<?php
@@ -1701,11 +1701,11 @@ function show_cron_form( $editing ) {
 							?>
 							<p class="description">
 								<?php
-									printf(
-										/* translators: The PHP tag name */
-										esc_html__( 'The opening %s tag must not be included.', 'wp-crontrol' ),
-										'<code>&lt;?php</code>'
-									);
+								printf(
+									/* translators: The PHP tag name */
+									esc_html__( 'The opening %s tag must not be included.', 'wp-crontrol' ),
+									'<code>&lt;?php</code>'
+								);
 								?>
 							</p>
 							<p><textarea class="large-text code" rows="10" cols="50" id="crontrol_hookcode" name="crontrol_hookcode"><?php echo esc_textarea( $editing ? $existing['args'][0]['code'] : '' ); ?></textarea></p>
@@ -1750,13 +1750,13 @@ function show_cron_form( $editing ) {
 							<?php do_action( 'crontrol/manage/args', $existing ); ?>
 							<p class="description" id="crontrol_args_description">
 								<?php
-									printf(
-										/* translators: 1, 2, and 3: Example values for an input field. */
-										esc_html__( 'Use a JSON encoded array, e.g. %1$s, %2$s, or %3$s', 'wp-crontrol' ),
-										'<code>[25]</code>',
-										'<code>["asdf"]</code>',
-										'<code>["i","want",25,"cakes"]</code>'
-									);
+								printf(
+									/* translators: 1, 2, and 3: Example values for an input field. */
+									esc_html__( 'Use a JSON encoded array, e.g. %1$s, %2$s, or %3$s', 'wp-crontrol' ),
+									'<code>[25]</code>',
+									'<code>["asdf"]</code>',
+									'<code>["i","want",25,"cakes"]</code>'
+								);
 								?>
 							</p>
 						</td>
@@ -1823,11 +1823,11 @@ function show_cron_form( $editing ) {
 
 						<p class="description">
 							<?php
-								printf(
-									/* translators: %s Timezone name. */
-									esc_html__( 'Timezone: %s', 'wp-crontrol' ),
-									esc_html( get_timezone_name() )
-								);
+							printf(
+								/* translators: %s Timezone name. */
+								esc_html__( 'Timezone: %s', 'wp-crontrol' ),
+								esc_html( get_timezone_name() )
+							);
 							?>
 						</p>
 					</td>
@@ -1849,12 +1849,12 @@ function show_cron_form( $editing ) {
 			</p>
 			<p class="description">
 				<?php
-					echo esc_html( sprintf(
-						/* translators: 1: Date and time, 2: Timezone */
-						__( 'Site time when page loaded: %1$s, %2$s', 'wp-crontrol' ),
-						date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) ),
-						get_timezone_name()
-					) );
+				echo esc_html( sprintf(
+					/* translators: 1: Date and time, 2: Timezone */
+					__( 'Site time when page loaded: %1$s, %2$s', 'wp-crontrol' ),
+					date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) ),
+					get_timezone_name()
+				) );
 				?>
 			</p>
 		</form>
@@ -1997,12 +1997,12 @@ function admin_manage_page() {
 
 				<p class="description">
 					<?php
-						echo esc_html( sprintf(
-							/* translators: 1: Date and time, 2: Timezone */
-							__( 'Site time when page loaded: %1$s, %2$s', 'wp-crontrol' ),
-							date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) ),
-							get_timezone_name()
-						) );
+					echo esc_html( sprintf(
+						/* translators: 1: Date and time, 2: Timezone */
+						__( 'Site time when page loaded: %1$s, %2$s', 'wp-crontrol' ),
+						date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) ),
+						get_timezone_name()
+					) );
 					?>
 				</p>
 			</div>
