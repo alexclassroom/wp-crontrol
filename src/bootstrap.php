@@ -1528,8 +1528,9 @@ function show_cron_form( $editing ) {
 		);
 
 		$button        = __( 'Add Event', 'wp-crontrol' );
-		$next_run_date_local = '';
-		$next_run_time_local = '';
+		$suggestion = strtotime( '+1 hour' );
+		$next_run_date_local = get_date_from_gmt( gmdate( 'Y-m-d H:i:s', $suggestion ), 'Y-m-d' );
+		$next_run_time_local = get_date_from_gmt( gmdate( 'Y-m-d H:\0\0:\0\0', $suggestion ), 'H:i:s' );
 	}
 
 	if ( $is_editing_php && isset( $existing['args']['code'] ) ) {
