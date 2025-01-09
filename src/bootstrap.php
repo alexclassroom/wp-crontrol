@@ -6,9 +6,11 @@
 namespace Crontrol;
 
 use Crontrol\Event\Table;
+use DateTimeZone;
 use stdClass;
 use WP_Error;
 use Exception;
+use IntlTimeZone;
 
 use function Crontrol\Event\check_integrity;
 
@@ -1403,6 +1405,55 @@ function get_timezone_name() {
 	/** @var string */
 	$timezone_string = get_option( 'timezone_string', '' );
 	$gmt_offset      = get_option( 'gmt_offset', 0 );
+	$offset_string   = get_utc_offset();
+
+	if ( 'UTC' === $timezone_string || ( empty( $gmt_offset ) && empty( $timezone_string ) ) ) {
+		return 'UTC';
+	}
+
+	if ( '' === $timezone_string ) {
+		return $offset_string;
+	}
+
+	$parts = explode( '/', $timezone_string );
+	array_shift( $parts );
+	$location = str_replace( '_', ' ', implode( ', ', array_reverse( $parts ) ) );
+
+	try {
+		$timezone = new DateTimeZone( $timezone_string );
+		$transitions = $timezone->getTransitions( time(), time() );
+
+		if ( empty( $transitions ) ) {
+			throw new Exception( 'No transitions found' );
+		}
+
+		$transition = reset( $transitions );
+		$name = $transition['abbr'];
+
+		if ( class_exists( 'IntlTimeZone' ) ) {
+			$intl_tz = IntlTimeZone::createTimeZone( $timezone_string );
+			$name = $intl_tz->getDisplayName( $transition['isdst'] );
+		}
+
+		return sprintf(
+			'(%1$s) %2$s - %3$s',
+			$offset_string,
+			$name,
+			$location,
+		);
+	} catch ( Exception $e ) {
+		return sprintf(
+			'(%s) %s',
+			$offset_string,
+			$location,
+		);
+	}
+}
+
+function get_timezone_location() {
+	/** @var string */
+	$timezone_string = get_option( 'timezone_string', '' );
+	$gmt_offset      = get_option( 'gmt_offset', 0 );
 
 	if ( 'UTC' === $timezone_string || ( empty( $gmt_offset ) && empty( $timezone_string ) ) ) {
 		return 'UTC';
@@ -1414,11 +1465,7 @@ function get_timezone_name() {
 
 	$parts = explode( '/', $timezone_string );
 
-	return sprintf(
-		'%s (%s)',
-		str_replace( '_', ' ', end( $parts ) ),
-		get_utc_offset()
-	);
+	return str_replace( '_', ' ', end( $parts ) );
 }
 
 /**

@@ -211,7 +211,7 @@ class Table extends \WP_List_Table {
 				sprintf(
 					/* translators: %s: UTC offset */
 					__( 'Next Run (%s)', 'wp-crontrol' ),
-					\Crontrol\get_utc_offset()
+					\Crontrol\get_timezone_location()
 				),
 			),
 			'crontrol_actions'    => esc_html__( 'Action', 'wp-crontrol' ),
