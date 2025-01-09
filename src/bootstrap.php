@@ -2252,7 +2252,9 @@ function time_since( $older_date, $newer_date ) {
  * Converts a period of time in seconds into a human-readable format representing the interval.
  *
  * Intervals less than an hour are displayed in minutes, and intervals less than a minute are
- * displayed in seconds. All other intervals are displayed in the two largest units.
+ * displayed in seconds. All intervals are displayed in the two largest units.
+ *
+ * The `$accurate` parameter can be used to display an interval of less than an hour in minutes and seconds.
  *
  * Example:
  *
@@ -2260,15 +2262,16 @@ function time_since( $older_date, $newer_date ) {
  *     // 40 seconds
  *     echo \Crontrol\interval( 450 );
  *     // 7 minutes
- *     echo \Crontrol\interval( 3800 );
- *     // 1 hour 3 minutes
+ *     echo \Crontrol\interval( 450, true );
+ *     // 7 minutes 30 seconds
+ *     echo \Crontrol\interval( 5678 );
+ *     // 1 hour 34 minutes
  *
- * @param  int|float $since A period of time in seconds.
+ * @param  int|float $since    A period of time in seconds.
+ * @param  bool      $accurate Whether to display the interval in minutes and seconds.
  * @return string An interval represented as a string.
  */
-function interval( $since ) {
-	$since = intval( $since );
-
+function interval( $since, bool $accurate = false ) {
 	// Array of time period chunks.
 	$chunks = array(
 		/* translators: %s: The number of years in an interval of time. */
@@ -2291,11 +2294,12 @@ function interval( $since ) {
 		return __( 'now', 'wp-crontrol' );
 	}
 
-	if ( ( $since >= MINUTE_IN_SECONDS ) && ( $since < HOUR_IN_SECONDS ) ) {
+	if ( ( ! $accurate ) && ( $since >= MINUTE_IN_SECONDS ) && ( $since < HOUR_IN_SECONDS ) ) {
+		$num = intval( floor( $since / MINUTE_IN_SECONDS ) );
 		return sprintf(
 			/* translators: %s: The number of minutes in an interval of time. */
-			_n( '%s minute', '%s minutes', $since, 'wp-crontrol' ),
-			floor( $since / MINUTE_IN_SECONDS )
+			_n( '%s minute', '%s minutes', $num, 'wp-crontrol' ),
+			$num
 		);
 	}
 
