@@ -1450,7 +1450,12 @@ function get_timezone_name() {
 	}
 }
 
-function get_timezone_location() {
+/**
+ * Returns the display name for the location of the site's timezone.
+ *
+ * @return string The name of the site's timezone location.
+ */
+function get_timezone_location(): string {
 	/** @var string */
 	$timezone_string = get_option( 'timezone_string', '' );
 	$gmt_offset      = get_option( 'gmt_offset', 0 );

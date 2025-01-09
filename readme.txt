@@ -39,6 +39,7 @@ WP Crontrol is an essential tool for owners of WordPress websites and WooCommerc
 * **Simplify Management**: Add, edit, delete, and pause cron events from a user-friendly interface, without needing to write any code.
 * **Gain Insights**: Export cron event data for analysis or reporting.
 * **Action Scheduler Compatibility**: Full support for the Action Scheduler system in WooCommerce, which is used to process recurring payments, subscriptions, and background orders.
+* **Clarity of times and timezones**: All times are shown with a clear and accurate indication of which timezone applies. No more guesswork!
 
 ### For developers
 
