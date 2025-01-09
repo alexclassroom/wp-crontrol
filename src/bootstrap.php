@@ -1418,13 +1418,18 @@ function get_timezone_name() {
 	$parts = explode( '/', $timezone_string );
 	array_shift( $parts );
 	$location = str_replace( '_', ' ', implode( ', ', array_reverse( $parts ) ) );
+	$time = time();
 
 	try {
 		$timezone = new DateTimeZone( $timezone_string );
-		$transitions = $timezone->getTransitions( time(), time() );
+		$transitions = $timezone->getTransitions( $time, $time );
 
 		if ( empty( $transitions ) ) {
-			throw new Exception( 'No transitions found' );
+			return sprintf(
+				'(%s) %s',
+				$offset_string,
+				$location,
+			);
 		}
 
 		$transition = reset( $transitions );
