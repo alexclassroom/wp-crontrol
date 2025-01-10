@@ -38,7 +38,7 @@ Install the PHP dependencies:
 
 The test suite includes acceptance tests which run in a Docker container. Ensure Docker Desktop is running, then start the containers with:
 
-	composer test:start
+	composer exec tests-start
 
 To run the whole test suite which includes acceptance tests, linting, and static analysis:
 
@@ -52,7 +52,7 @@ To run tests individually, run one of:
 
 To stop the Docker containers:
 
-	composer test:stop
+	composer exec tests-stop
 
 ## Releasing a New Version
 
