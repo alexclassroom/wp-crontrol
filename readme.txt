@@ -32,7 +32,7 @@ WP Crontrol is aware of timezones, will alert you to events that have no actions
 
 ### For site owners
 
-WP Crontrol is an essential tool for owners of WordPress websites and WooCommerce stores who want to ensure that scheduled cron events run correctly and efficiently. By providing complete control over cron events, WP Crontrol helps you:
+WP Crontrol is an essential tool for owners of WordPress websites and WooCommerce stores to ensure that scheduled cron events run correctly and efficiently. By providing complete control over cron events, WP Crontrol helps you:
 
 * **Improve reliability**: Quickly address missed or failed cron events, ensuring your website or WooCommerce store continues to function as expected.
 * **Enhance security**: Monitor and control cron events to ensure automatic update checks are performed as they should.
@@ -43,7 +43,7 @@ WP Crontrol is an essential tool for owners of WordPress websites and WooCommerc
 
 ### For developers
 
-WP Crontrol is an invaluable tool for developers looking to streamline and debug their WordPress development process:
+WP Crontrol is an invaluable tool for developers to streamline and debug their WordPress development process:
 
 * **Enhanced debugging**: Easily identify and troubleshoot issues with scheduled tasks, ensuring your scheduled events and their callbacks run as expected.
 * **Custom schedules**: Create and manage custom cron schedules to fit the specific needs of your website, plugins, or themes, providing greater flexibility than just the core schedules.
