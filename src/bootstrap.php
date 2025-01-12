@@ -1009,14 +1009,15 @@ function action_handle_posts() {
  * @return void
  */
 function action_admin_menu() {
-	$schedules = add_options_page(
+	$tabs = [];
+	$tabs[] = add_options_page(
 		esc_html__( 'Cron Schedules', 'wp-crontrol' ),
 		esc_html__( 'Cron Schedules', 'wp-crontrol' ),
 		'manage_options',
 		'wp-crontrol-schedules',
 		__NAMESPACE__ . '\admin_options_page'
 	);
-	$events = add_management_page(
+	$tabs[] = add_management_page(
 		esc_html__( 'Cron Events', 'wp-crontrol' ),
 		esc_html__( 'Cron Events', 'wp-crontrol' ),
 		'manage_options',
@@ -1024,8 +1025,9 @@ function action_admin_menu() {
 		__NAMESPACE__ . '\admin_manage_page'
 	);
 
-	add_action( "load-{$schedules}", __NAMESPACE__ . '\admin_help_tab' );
-	add_action( "load-{$events}", __NAMESPACE__ . '\admin_help_tab' );
+	foreach ( $tabs as $tab ) {
+		add_action( "load-{$tab}", __NAMESPACE__ . '\admin_help_tab' );
+	}
 }
 
 /**
@@ -2149,6 +2151,8 @@ function do_tabs() {
 		),
 	);
 
+	$links = apply_filters( 'crontrol/links', $links );
+
 	?>
 	<div id="crontrol-header">
 		<nav class="nav-tab-wrapper">
@@ -2156,14 +2160,16 @@ function do_tabs() {
 			foreach ( $links as $id => $link ) {
 				if ( ! empty( $tabs[ $id ] ) ) {
 					printf(
-						'<a href="%s" class="nav-tab nav-tab-active">%s</a>',
+						'<a href="%1$s" class="nav-tab nav-tab-active" id="crontrol_tab_%2$s">%3$s</a>',
 						esc_url( $link[0] ),
+						esc_attr( $id ),
 						esc_html( $link[1] )
 					);
 				} else {
 					printf(
-						'<a href="%s" class="nav-tab">%s</a>',
+						'<a href="%1$s" class="nav-tab" id="crontrol_tab_%2$s">%3$s</a>',
 						esc_url( $link[0] ),
+						esc_attr( $id ),
 						esc_html( $link[1] )
 					);
 				}
