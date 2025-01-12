@@ -742,7 +742,7 @@ function action_handle_posts() {
 			wp_die( esc_html__( 'You are not allowed to delete PHP cron events.', 'wp-crontrol' ), 401 );
 		}
 
-		$deleted = wp_unschedule_hook( $hook );
+		$deleted = wp_unschedule_hook( $hook, true );
 
 		if ( 0 === $deleted ) {
 			$redirect = array(
@@ -752,7 +752,7 @@ function action_handle_posts() {
 			);
 			wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
 			exit;
-		} elseif ( $deleted ) {
+		} elseif ( ! is_wp_error( $deleted ) ) {
 			/**
 			 * Fires after all cron events with the given hook are deleted.
 			 *
