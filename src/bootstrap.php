@@ -17,6 +17,24 @@ use function Crontrol\Event\check_integrity;
 const TRANSIENT = 'crontrol-message-%d';
 const PAUSED_OPTION = 'wp_crontrol_paused';
 
+const MESSAGE_EVENT_RUN_NOW = 1;
+const MESSAGE_HOOK_DELETED_ALL = 2;
+const MESSAGE_EVENT_NONE_TO_DELETE = 3;
+const MESSAGE_EVENT_SAVED = 4;
+const MESSAGE_EVENT_DELETED = 6;
+const MESSAGE_EVENT_FAILED_TO_DELETE = 7;
+const MESSAGE_EVENT_FAILED_TO_EXECUTE = 8;
+const MESSAGE_EVENT_DELETED_SELECTED = 9;
+const MESSAGE_EVENT_FAILED_TO_SAVE = 10;
+const MESSAGE_HOOK_PAUSED = 11;
+const MESSAGE_HOOK_RESUMED = 12;
+const MESSAGE_EVENT_URL_EVENT_SAVED = 13;
+const MESSAGE_EVENT_PHP_EVENT_SAVED = 14;
+const MESSAGE_UNKNOWN_ERROR = 'error';
+
+const MESSAGE_SCHEDULE_DELETED = 2;
+const MESSAGE_SCHEDULE_SAVED = 3;
+
 /**
  * Hook onto all of the actions and filters needed by the plugin.
  *
@@ -180,13 +198,13 @@ function action_handle_posts() {
 
 		$redirect = array(
 			'page'             => 'wp-crontrol',
-			'crontrol_message' => '4',
+			'crontrol_message' => MESSAGE_EVENT_SAVED,
 			'crontrol_name'    => rawurlencode( $cr->hookname ),
 		);
 
 		if ( is_wp_error( $added ) ) {
 			set_message( $added->get_error_message() );
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 		}
 
 		wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
@@ -238,13 +256,13 @@ function action_handle_posts() {
 		$hookname = ( ! empty( $cr->eventname ) ) ? $cr->eventname : __( 'URL Cron', 'wp-crontrol' );
 		$redirect = array(
 			'page'             => 'wp-crontrol',
-			'crontrol_message' => '13',
+			'crontrol_message' => MESSAGE_EVENT_URL_EVENT_SAVED,
 			'crontrol_name'    => rawurlencode( $hookname ),
 		);
 
 		if ( is_wp_error( $added ) ) {
 			set_message( $added->get_error_message() );
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 		}
 
 		wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
@@ -296,13 +314,13 @@ function action_handle_posts() {
 		$hookname = ( ! empty( $cr->eventname ) ) ? $cr->eventname : __( 'PHP Cron', 'wp-crontrol' );
 		$redirect = array(
 			'page'             => 'wp-crontrol',
-			'crontrol_message' => '14',
+			'crontrol_message' => MESSAGE_EVENT_PHP_EVENT_SAVED,
 			'crontrol_name'    => rawurlencode( $hookname ),
 		);
 
 		if ( is_wp_error( $added ) ) {
 			set_message( $added->get_error_message() );
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 		}
 
 		wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
@@ -329,7 +347,7 @@ function action_handle_posts() {
 
 		$redirect = array(
 			'page'             => 'wp-crontrol',
-			'crontrol_message' => '4',
+			'crontrol_message' => MESSAGE_EVENT_SAVED,
 			'crontrol_name'    => rawurlencode( $cr->hookname ),
 		);
 
@@ -337,7 +355,7 @@ function action_handle_posts() {
 
 		if ( is_wp_error( $original ) ) {
 			set_message( $original->get_error_message() );
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 			wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
 			exit;
 		}
@@ -346,7 +364,7 @@ function action_handle_posts() {
 
 		if ( is_wp_error( $deleted ) ) {
 			set_message( $deleted->get_error_message() );
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 			wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
 			exit;
 		}
@@ -394,7 +412,7 @@ function action_handle_posts() {
 
 		if ( is_wp_error( $added ) ) {
 			set_message( $added->get_error_message() );
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 		}
 
 		wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
@@ -420,7 +438,7 @@ function action_handle_posts() {
 		$hookname = ( ! empty( $cr->eventname ) ) ? $cr->eventname : __( 'URL Cron', 'wp-crontrol' );
 		$redirect = array(
 			'page'             => 'wp-crontrol',
-			'crontrol_message' => '13',
+			'crontrol_message' => MESSAGE_EVENT_URL_EVENT_SAVED,
 			'crontrol_name'    => rawurlencode( $hookname ),
 		);
 
@@ -428,7 +446,7 @@ function action_handle_posts() {
 
 		if ( is_wp_error( $original ) ) {
 			set_message( $original->get_error_message() );
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 			wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
 			exit;
 		}
@@ -437,7 +455,7 @@ function action_handle_posts() {
 
 		if ( is_wp_error( $deleted ) ) {
 			set_message( $deleted->get_error_message() );
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 			wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
 			exit;
 		}
@@ -485,7 +503,7 @@ function action_handle_posts() {
 
 		if ( is_wp_error( $added ) ) {
 			set_message( $added->get_error_message() );
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 		}
 
 		wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
@@ -510,7 +528,7 @@ function action_handle_posts() {
 		$hookname = ( ! empty( $cr->eventname ) ) ? $cr->eventname : __( 'PHP Cron', 'wp-crontrol' );
 		$redirect = array(
 			'page'             => 'wp-crontrol',
-			'crontrol_message' => '14',
+			'crontrol_message' => MESSAGE_EVENT_PHP_EVENT_SAVED,
 			'crontrol_name'    => rawurlencode( $hookname ),
 		);
 
@@ -518,7 +536,7 @@ function action_handle_posts() {
 
 		if ( is_wp_error( $original ) ) {
 			set_message( $original->get_error_message() );
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 			wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
 			exit;
 		}
@@ -527,7 +545,7 @@ function action_handle_posts() {
 
 		if ( is_wp_error( $deleted ) ) {
 			set_message( $deleted->get_error_message() );
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 			wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
 			exit;
 		}
@@ -575,7 +593,7 @@ function action_handle_posts() {
 
 		if ( is_wp_error( $added ) ) {
 			set_message( $added->get_error_message() );
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 		}
 
 		wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
@@ -593,7 +611,7 @@ function action_handle_posts() {
 		Schedule\add( $name, $interval, $display );
 		$redirect = array(
 			'page'             => 'wp-crontrol-schedules',
-			'crontrol_message' => '3',
+			'crontrol_message' => MESSAGE_SCHEDULE_SAVED,
 			'crontrol_name'    => rawurlencode( $name ),
 		);
 		wp_safe_redirect( add_query_arg( $redirect, admin_url( 'options-general.php' ) ) );
@@ -608,7 +626,7 @@ function action_handle_posts() {
 		Schedule\delete( $schedule );
 		$redirect = array(
 			'page'             => 'wp-crontrol-schedules',
-			'crontrol_message' => '2',
+			'crontrol_message' => MESSAGE_SCHEDULE_DELETED,
 			'crontrol_name'    => rawurlencode( $schedule ),
 		);
 		wp_safe_redirect( add_query_arg( $redirect, admin_url( 'options-general.php' ) ) );
@@ -651,7 +669,7 @@ function action_handle_posts() {
 		$redirect = array(
 			'page'             => 'wp-crontrol',
 			'crontrol_name'    => $deleted,
-			'crontrol_message' => '9',
+			'crontrol_message' => MESSAGE_EVENT_DELETED_SELECTED,
 		);
 		wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
 		exit;
@@ -671,7 +689,7 @@ function action_handle_posts() {
 
 		$redirect = array(
 			'page'             => 'wp-crontrol',
-			'crontrol_message' => '6',
+			'crontrol_message' => MESSAGE_EVENT_DELETED,
 			'crontrol_name'    => rawurlencode( $hook ),
 		);
 
@@ -679,7 +697,7 @@ function action_handle_posts() {
 
 		if ( is_wp_error( $event ) ) {
 			set_message( $event->get_error_message() );
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 			wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
 			exit;
 		}
@@ -688,7 +706,7 @@ function action_handle_posts() {
 
 		if ( is_wp_error( $deleted ) ) {
 			set_message( $deleted->get_error_message() );
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 		} else {
 			/**
 			 * Fires after a cron event is deleted.
@@ -726,7 +744,7 @@ function action_handle_posts() {
 		if ( 0 === $deleted ) {
 			$redirect = array(
 				'page'             => 'wp-crontrol',
-				'crontrol_message' => '3',
+				'crontrol_message' => MESSAGE_EVENT_NONE_TO_DELETE,
 				'crontrol_name'    => rawurlencode( $hook ),
 			);
 			wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
@@ -742,7 +760,7 @@ function action_handle_posts() {
 
 			$redirect = array(
 				'page'             => 'wp-crontrol',
-				'crontrol_message' => '2',
+				'crontrol_message' => MESSAGE_HOOK_DELETED_ALL,
 				'crontrol_name'    => rawurlencode( $hook ),
 			);
 			wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
@@ -750,7 +768,7 @@ function action_handle_posts() {
 		} else {
 			$redirect = array(
 				'page'             => 'wp-crontrol',
-				'crontrol_message' => '7',
+				'crontrol_message' => MESSAGE_EVENT_FAILED_TO_DELETE,
 				'crontrol_name'    => rawurlencode( $hook ),
 			);
 			wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
@@ -768,7 +786,7 @@ function action_handle_posts() {
 
 		$redirect = array(
 			'page'             => 'wp-crontrol',
-			'crontrol_message' => '1',
+			'crontrol_message' => MESSAGE_EVENT_RUN_NOW,
 			'crontrol_name'    => rawurlencode( $hook ),
 		);
 
@@ -786,7 +804,7 @@ function action_handle_posts() {
 					)
 				);
 			}
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 		}
 
 		wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
@@ -808,7 +826,7 @@ function action_handle_posts() {
 
 		$redirect = array(
 			'page'             => 'wp-crontrol',
-			'crontrol_message' => '11',
+			'crontrol_message' => MESSAGE_HOOK_PAUSED,
 			'crontrol_name'    => rawurlencode( $hook ),
 		);
 
@@ -826,7 +844,7 @@ function action_handle_posts() {
 					)
 				);
 			}
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 		} else {
 			/**
 			 * Fires after a cron event hook is paused.
@@ -855,7 +873,7 @@ function action_handle_posts() {
 
 		$redirect = array(
 			'page'             => 'wp-crontrol',
-			'crontrol_message' => '12',
+			'crontrol_message' => MESSAGE_HOOK_RESUMED,
 			'crontrol_name'    => rawurlencode( $hook ),
 		);
 
@@ -873,7 +891,7 @@ function action_handle_posts() {
 					)
 				);
 			}
-			$redirect['crontrol_message'] = 'error';
+			$redirect['crontrol_message'] = MESSAGE_UNKNOWN_ERROR;
 		} else {
 			/**
 			 * Fires after a paused cron event hook is resumed.
@@ -1140,12 +1158,12 @@ function filter_cron_schedules( array $scheds ) {
  */
 function admin_options_page() {
 	$messages = array(
-		'2' => array(
+		MESSAGE_SCHEDULE_DELETED => array(
 			/* translators: %s: The name of the cron schedule. */
 			__( 'Deleted the cron schedule %s.', 'wp-crontrol' ),
 			'success',
 		),
-		'3' => array(
+		MESSAGE_SCHEDULE_SAVED => array(
 			/* translators: %s: The name of the cron schedule. */
 			__( 'Added the cron schedule %s.', 'wp-crontrol' ),
 			'success',
@@ -1932,69 +1950,69 @@ function show_cron_form( $editing ) {
  */
 function admin_manage_page() {
 	$messages = array(
-		'1'  => array(
+		MESSAGE_EVENT_RUN_NOW => array(
 			/* translators: %s: The name of the cron event. */
 			__( 'Scheduled the cron event %s to run now. The original event will not be affected.', 'wp-crontrol' ),
 			'success',
 		),
-		'2'  => array(
+		MESSAGE_HOOK_DELETED_ALL => array(
 			/* translators: %s: The name of the cron event. */
 			__( 'Deleted all %s cron events.', 'wp-crontrol' ),
 			'success',
 		),
-		'3'  => array(
+		MESSAGE_EVENT_NONE_TO_DELETE => array(
 			/* translators: %s: The name of the cron event. */
 			__( 'There are no %s cron events to delete.', 'wp-crontrol' ),
 			'info',
 		),
-		'4'  => array(
+		MESSAGE_EVENT_SAVED => array(
 			/* translators: %s: The name of the cron event. */
 			__( 'Saved the cron event %s.', 'wp-crontrol' ),
 			'success',
 		),
-		'6'  => array(
+		MESSAGE_EVENT_DELETED => array(
 			/* translators: %s: The name of the cron event. */
 			__( 'Deleted the cron event %s.', 'wp-crontrol' ),
 			'success',
 		),
-		'7'  => array(
+		MESSAGE_EVENT_FAILED_TO_DELETE => array(
 			/* translators: %s: The name of the cron event. */
 			__( 'Failed to the delete the cron event %s.', 'wp-crontrol' ),
 			'error',
 		),
-		'8'  => array(
+		MESSAGE_EVENT_FAILED_TO_EXECUTE => array(
 			/* translators: %s: The name of the cron event. */
 			__( 'Failed to the execute the cron event %s.', 'wp-crontrol' ),
 			'error',
 		),
-		'9'  => array(
+		MESSAGE_EVENT_DELETED_SELECTED => array(
 			__( 'Deleted the selected cron events.', 'wp-crontrol' ),
 			'success',
 		),
-		'10' => array(
+		MESSAGE_EVENT_FAILED_TO_SAVE => array(
 			/* translators: %s: The name of the cron event. */
 			__( 'Failed to save the cron event %s.', 'wp-crontrol' ),
 			'error',
 		),
-		'11' => array(
+		MESSAGE_HOOK_PAUSED => array(
 			/* translators: %s: The name of the cron event. */
 			__( 'Paused the %s hook.', 'wp-crontrol' ),
 			'success',
 		),
-		'12' => array(
+		MESSAGE_HOOK_RESUMED => array(
 			/* translators: %s: The name of the cron event. */
 			__( 'Resumed the %s hook.', 'wp-crontrol' ),
 			'success',
 		),
-		'13' => array(
+		MESSAGE_EVENT_URL_EVENT_SAVED => array(
 			__( 'URL cron event saved.', 'wp-crontrol' ),
 			'success',
 		),
-		'14' => array(
+		MESSAGE_EVENT_PHP_EVENT_SAVED => array(
 			__( 'PHP cron event saved.', 'wp-crontrol' ),
 			'success',
 		),
-		'error' => array(
+		MESSAGE_UNKNOWN_ERROR => array(
 			__( 'An unknown error occurred.', 'wp-crontrol' ),
 			'error',
 		),
