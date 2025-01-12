@@ -184,6 +184,8 @@ If file editing has been disabled via the `DISALLOW_FILE_MODS` or `DISALLOW_FILE
 
 Therefore, the user access level required to execute arbitrary PHP code does not change with WP Crontrol activated.
 
+If the `CRONTROL_DISALLOW_PHP_EVENTS` constant is defined and set to `true`, then PHP cron events will be disabled completely. Any existing PHP cron events will remain place (and can be deleted if user permissions allows) but their PHP code will not be executed when the event runs, and no PHP cron events can be added, edited, or run.
+
 [You can read all about the features and security of PHP cron events on the WP Crontrol website](https://wp-crontrol.com/docs/php-cron-events/).
 
 ### Are any WP-CLI commands available?

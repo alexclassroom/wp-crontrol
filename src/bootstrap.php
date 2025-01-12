@@ -269,7 +269,7 @@ function action_handle_posts() {
 		exit;
 
 	} elseif ( isset( $_POST['crontrol_action'] ) && ( 'new_php_cron' === $_POST['crontrol_action'] ) ) {
-		if ( ! current_user_can( 'edit_files' ) ) {
+		if ( ! current_user_can_manage_php_cron_events() ) {
 			wp_die( esc_html__( 'You are not allowed to add new PHP cron events.', 'wp-crontrol' ), 401 );
 		}
 		check_admin_referer( 'crontrol-new-cron' );
@@ -335,7 +335,7 @@ function action_handle_posts() {
 
 		check_admin_referer( "crontrol-edit-cron_{$cr->original_hookname}_{$cr->original_sig}_{$cr->original_next_run_utc}" );
 
-		if ( 'crontrol_cron_job' === $cr->hookname && ! current_user_can( 'edit_files' ) ) {
+		if ( 'crontrol_cron_job' === $cr->hookname && ! current_user_can_manage_php_cron_events() ) {
 			wp_die( esc_html__( 'You are not allowed to edit PHP cron events.', 'wp-crontrol' ), 401 );
 		}
 
@@ -510,7 +510,7 @@ function action_handle_posts() {
 		exit;
 
 	} elseif ( isset( $_POST['crontrol_action'] ) && ( 'edit_php_cron' === $_POST['crontrol_action'] ) ) {
-		if ( ! current_user_can( 'edit_files' ) ) {
+		if ( ! current_user_can_manage_php_cron_events() ) {
 			wp_die( esc_html__( 'You are not allowed to edit PHP cron events.', 'wp-crontrol' ), 401 );
 		}
 
@@ -650,6 +650,7 @@ function action_handle_posts() {
 
 		foreach ( $delete as $next_run_utc => $events ) {
 			foreach ( (array) $events as $hook => $sig ) {
+				// PHP cron events can be deleted even if they're disallowed, as long as the user has permission.
 				if ( 'crontrol_cron_job' === $hook && ! current_user_can( 'edit_files' ) ) {
 					continue;
 				}
@@ -683,6 +684,7 @@ function action_handle_posts() {
 		$next_run_utc = wp_unslash( $_GET['crontrol_next_run_utc'] );
 		check_admin_referer( "crontrol-delete-cron_{$hook}_{$sig}_{$next_run_utc}" );
 
+		// PHP cron events can be deleted even if they're disallowed, as long as the user has permission.
 		if ( 'crontrol_cron_job' === $hook && ! current_user_can( 'edit_files' ) ) {
 			wp_die( esc_html__( 'You are not allowed to delete PHP cron events.', 'wp-crontrol' ), 401 );
 		}
@@ -735,6 +737,7 @@ function action_handle_posts() {
 		$deleted = false;
 		check_admin_referer( "crontrol-delete-hook_{$hook}" );
 
+		// Sanity check
 		if ( 'crontrol_cron_job' === $hook ) {
 			wp_die( esc_html__( 'You are not allowed to delete PHP cron events.', 'wp-crontrol' ), 401 );
 		}
@@ -781,6 +784,11 @@ function action_handle_posts() {
 		$hook = wp_unslash( $_GET['crontrol_id'] );
 		$sig = wp_unslash( $_GET['crontrol_sig'] );
 		check_admin_referer( "crontrol-run-cron_{$hook}_{$sig}" );
+
+		// Don't need an `edit_files` check here because PHP cron events can always be run unless they're disabled.
+		if ( ( 'crontrol_cron_job' === $hook ) && ! php_cron_events_enabled() ) {
+			wp_die( esc_html__( 'You are not allowed to run cron events.', 'wp-crontrol' ), 401 );
+		}
 
 		$ran = Event\run( $hook, $sig );
 
@@ -1619,8 +1627,8 @@ function show_cron_form( $editing ) {
 		);
 	}
 
-	$can_add_php = current_user_can( 'edit_files' ) && ! $editing;
-	$allowed = ( ! $is_editing_php || current_user_can( 'edit_files' ) );
+	$can_manage_php = current_user_can_manage_php_cron_events();
+	$allowed = ( ! $is_editing_php || $can_manage_php );
 	?>
 	<div id="crontrol_form" class="wrap narrow">
 		<?php
@@ -1689,7 +1697,7 @@ function show_cron_form( $editing ) {
 										<?php esc_html_e( 'URL cron event', 'wp-crontrol' ); ?>
 									</label>
 								</p>
-								<?php if ( $can_add_php ) { ?>
+								<?php if ( $can_manage_php ) { ?>
 									<p>
 										<label>
 											<input type="radio" name="crontrol_action" value="new_php_cron">
@@ -1756,7 +1764,7 @@ function show_cron_form( $editing ) {
 					<?php
 				}
 
-				if ( $is_editing_php || $can_add_php ) {
+				if ( $is_editing_php || ( ! $editing && $can_manage_php ) ) {
 					?>
 					<tr class="crontrol-event-php">
 						<th scope="row">
@@ -2457,7 +2465,7 @@ function enqueue_assets( $hook_suffix ) {
 	$vars = array();
 
 	if ( ! empty( $tab['add-event'] ) || ! empty( $tab['edit-event'] ) ) {
-		if ( current_user_can( 'edit_files' ) ) {
+		if ( current_user_can_manage_php_cron_events() ) {
 			$settings = wp_enqueue_code_editor( array(
 				'type' => 'text/x-php',
 			) );
@@ -2678,6 +2686,10 @@ function action_url_cron_event( array $args ): void {
  *
  * Therefore, the user access level required to execute arbitrary PHP code does not change with WP Crontrol activated.
  *
+ * If the `CRONTROL_DISALLOW_PHP_EVENTS` constant is defined and set to `true`, then PHP cron events will be disabled
+ * completely. Any existing PHP cron events will remain place (and can be deleted if user permissions allows) but their
+ * PHP code will not be executed when the event runs, and no PHP cron events can be added, edited, or run.
+ *
  * The PHP code that's saved in a PHP cron event is protected with an integrity check which prevents it from being executed
  * if the code is tampered with.
  *
@@ -2699,6 +2711,10 @@ function action_url_cron_event( array $args ): void {
  * }|string $args
  */
 function action_php_cron_event( $args ): void {
+	if ( ! php_cron_events_enabled() ) {
+		return;
+	}
+
 	if ( is_string( $args ) ) {
 		// Prior to WP Crontrol 1.16.2, PHP cron events were saved with the associative arguments array at the top
 		// level. This means arguments are passed as individual parameters to this function and the first parameter
@@ -2740,4 +2756,25 @@ function action_php_cron_event( $args ): void {
 	// Please see the function description above for information about the safety of this code.
 	// phpcs:ignore Squiz.PHP.Eval.Discouraged
 	eval( $code );
+}
+
+/**
+ * Returns whether PHP cron events are enabled.
+ *
+ * The PHP cron event functionality can be disabled by defining the `CRONTROL_DISALLOW_PHP_EVENTS` constant and setting
+ * its value to `true`. This constant can be defined in the `wp-config.php` file.
+ */
+function php_cron_events_enabled(): bool {
+	if ( defined( 'CRONTROL_DISALLOW_PHP_EVENTS' ) && CRONTROL_DISALLOW_PHP_EVENTS ) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Returns whether PHP cron events are enabled and can be managed by the current user.
+ */
+function current_user_can_manage_php_cron_events(): bool {
+	return ( php_cron_events_enabled() && current_user_can( 'edit_files' ) );
 }
