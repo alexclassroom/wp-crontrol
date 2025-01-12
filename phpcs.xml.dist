@@ -34,7 +34,8 @@
 		<!-- Exclude short description sniff so short `@var` notation can be used -->
 		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
 
-		<!-- Use Yoda condition checks, you may or may not. -->
+		<!-- Give me strength. -->
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax.Found"/>
 		<exclude name="WordPress.PHP.YodaConditions.NotYoda"/>
 	</rule>
 
