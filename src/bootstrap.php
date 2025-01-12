@@ -824,7 +824,7 @@ function action_handle_posts() {
 
 		$hook = wp_unslash( $_GET['crontrol_id'] );
 
-		if ( 'crontrol_cron_job' === $hook ) {
+		if ( ( 'crontrol_cron_job' === $hook ) || ( 'crontrol_url_cron_job' === $hook ) ) {
 			wp_die( esc_html__( 'You are not allowed to pause or resume cron events.', 'wp-crontrol' ), 401 );
 		}
 
