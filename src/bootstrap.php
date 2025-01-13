@@ -2693,7 +2693,7 @@ function action_url_cron_event( array $args ): void {
  * Therefore, the user access level required to execute arbitrary PHP code does not change with WP Crontrol activated.
  *
  * If the `CRONTROL_DISALLOW_PHP_EVENTS` constant is defined and set to `true`, then PHP cron events will be disabled
- * completely. Any existing PHP cron events will remain place (and can be deleted if user permissions allows) but their
+ * completely. Any existing PHP cron events will remain in place (and can be deleted if user permissions allow) but their
  * PHP code will not be executed when the event runs, and no PHP cron events can be added, edited, or run.
  *
  * The PHP code that's saved in a PHP cron event is protected with an integrity check which prevents it from being executed
