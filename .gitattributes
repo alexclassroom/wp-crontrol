@@ -15,7 +15,7 @@
 /codeception.dist.yml export-ignore
 /CONTRIBUTING.md export-ignore
 /docker-compose.yml export-ignore
-/netlify.toml export-ignore
 /package.json export-ignore
 /phpcs.xml.dist export-ignore
 /phpstan.neon.dist export-ignore
+/readme.md export-ignore
